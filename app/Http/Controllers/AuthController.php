@@ -61,4 +61,42 @@ class AuthController extends Controller
             ], 401);
         }
     }
+
+    function login(Request $request)
+    {
+        $email = $request->input('email');
+        $password = $request->input('password');
+
+        $validateEmail = User::where('email', $email)->first();
+        if ($validateEmail != null) {
+            $validator = Validator::make($request->all(), [
+                'email' => 'required | email |unique:users,email',
+                'password' => 'required | min:8'
+            ]);
+
+            $cekPassword = Hash::check($password, $validateEmail['password']);
+
+            if ($cekPassword) {
+                return response([
+                    'status' => 'success',
+                    'message' => 'Login success',
+                    'data' => [
+                        'user_id' => $validateEmail['id'],
+                        'name' => $validateEmail['name'],
+                        'email' => $validateEmail['email']
+                    ]
+                ], 200);
+            } else {
+                return response([
+                    'status' => 'failed',
+                    'message' => 'Yah password kamu salah nih'
+                ], 401);
+            }
+        } else {
+            return response([
+                'status' => 'failed',
+                'message' => 'Yah email belum terdaftar nihh'
+            ], 404);
+        }
+    }
 }
