@@ -11,10 +11,22 @@ use Illuminate\Support\Str;
 class ProductController extends Controller
 {
 
-    function getAllProduct()
+    function getAllProduct(Request $request)
     {
-        $dataProduct = Product::get();
-        return $dataProduct;
+        $apiKeyHeader = $request->header('API-KEY');
+        if ($apiKeyHeader == env('API_KEY')) {
+            $dataProduct = Product::get();
+            return response([
+                'status' => 'success',
+                'message' => 'Berhasil memuat data produk',
+                'data' => $dataProduct
+            ], 200);
+        } else {
+            return response([
+                'status' => 'failed',
+                'message' => 'Invalid api key',
+            ], 400);
+        }
     }
 
     function insert(Request $request)
