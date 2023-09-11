@@ -168,4 +168,41 @@ class ProductController extends Controller
             ], 404);
         }
     }
+
+    function delete(Request $request)
+    {
+        $apiKeyHeader = $request->header('API-KEY');
+        if ($apiKeyHeader == env('API_KEY')) {
+
+            $validator  = Validator::make($request->all(), [
+                'id' => 'required | integer'
+            ]);
+            if ($validator->fails()) {
+                return response([
+                    'status' => 'failed',
+                    'message' => 'Yahh Terjadi kesalahan'
+                ], 402);
+            } else {
+
+                $id = $request->input('id');
+                $delete = Product::where('id', $id)->delete();
+                if ($delete) {
+                    return response([
+                        'status' => 'success',
+                        'message' => 'Horee berhasil menghapus produk'
+                    ]);
+                } else {
+                    return response([
+                        'status' => 'failed',
+                        'message' => 'Yahh Gagal menghapus produk'
+                    ], 402);
+                }
+            }
+        } else {
+            return response([
+                'status' => 'failed',
+                'message' => 'Invalid API Key'
+            ], 402);
+        }
+    }
 }
