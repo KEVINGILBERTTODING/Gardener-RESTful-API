@@ -217,4 +217,35 @@ class ProductController extends Controller
             ], 402);
         }
     }
+
+    function filter(Request $request)
+    {
+        $productName = $request->input('query');
+        $apiKeyHeader = $request->header('API-KEY');
+        if ($apiKeyHeader == env("API_KEY")) {
+            $validator = Validator::make($request->all(), [
+                'query' => 'required | string'
+            ]);
+
+            if ($validator->fails()) {
+                return response([
+                    'status' => 'failed',
+                    'message' => 'Terjadi kesalahan'
+                ], 404);
+            } else {
+                $dataProduct = Product::where('product_name', 'like', '%' . $productName . '%')
+                    ->get();
+                return response([
+                    'status' => 'success',
+                    'message' => 'Berhasil mengambil data product',
+                    'data' => $dataProduct
+                ], 200);
+            }
+        } else {
+            return response([
+                'status' => 'failed',
+                'message' => 'Api Key invalid'
+            ], 404);
+        }
+    }
 }

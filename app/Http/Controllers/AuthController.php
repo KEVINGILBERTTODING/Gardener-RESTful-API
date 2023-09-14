@@ -33,7 +33,7 @@ class AuthController extends Controller
                 if ($validator->fails()) {
                     return response([
                         'status' => 'failed',
-                        'message' => 'Yahh terjadi kesalan'
+                        'message' => 'Yahh terjadi kesalahan'
                     ], 401);
                 }
 
@@ -91,7 +91,7 @@ class AuthController extends Controller
                         'status' => 'success',
                         'message' => 'Login success',
                         'data' => [
-                            'user_id' => $validateEmail['id'],
+                            'id' => $validateEmail['id'],
                             'name' => $validateEmail['name'],
                             'email' => $validateEmail['email']
                         ]
