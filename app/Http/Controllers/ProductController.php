@@ -235,6 +235,9 @@ class ProductController extends Controller
             } else {
                 $dataProduct = Product::where('product_name', 'like', '%' . $productName . '%')
                     ->get();
+
+
+
                 return response([
                     'status' => 'success',
                     'message' => 'Berhasil mengambil data product',

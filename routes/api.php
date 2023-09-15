@@ -25,6 +25,6 @@ Route::post("/register", [AuthController::class, 'register']);
 Route::post("/login", [AuthController::class, 'login']);
 Route::get("/product", [ProductController::class, 'getAllProduct']);
 Route::post("/product/insert", [ProductController::class, 'insert']);
-Route::post("", [ProductController::class, 'update']);
+Route::post("/product/update", [ProductController::class, 'update']);
 Route::post("/product/delete", [ProductController::class, 'delete']);
 Route::get("/product/filter", [ProductController::class, "filter"]);
